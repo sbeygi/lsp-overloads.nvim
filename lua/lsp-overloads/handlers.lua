@@ -43,13 +43,16 @@ local check_trigger_char = function(line_to_cursor, triggers)
     -- Check if cursor is inside a tuple
     local current_char = line_to_cursor:sub(#line_to_cursor, #line_to_cursor)
     local prev_char = line_to_cursor:sub(#line_to_cursor - 1, #line_to_cursor - 1)
+    local pos = vim.api.nvim_win_get_cursor(0)
+    local next_char = vim.api.nvim_get_current_line():sub(pos[2] + 1, pos[2] + 1)
+
     if current_char == trigger_char then
       if trigger_char == "," then
         return check_tuple(line_to_cursor)
       end
       return true
     end
-    if current_char == " " and prev_char == trigger_char then
+    if (current_char == " " and prev_char == trigger_char) or next_char == trigger_char then
       if trigger_char == "," then
         return check_tuple(line_to_cursor)
       end
