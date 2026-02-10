@@ -20,7 +20,7 @@ function M.setup(client, config)
 
   local group = augroup("LspSignature", { clear = false })
   vim.api.nvim_clear_autocmds({ group = group, pattern = "<buffer>" })
-  autocmd("TextChangedI", {
+  autocmd({ "TextChangedI", "CursorMovedI" }, {
     group = group,
     pattern = "<buffer>",
     callback = function()

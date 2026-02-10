@@ -114,6 +114,7 @@ local function convert_signature_help_to_markdown_lines(signature_help, ft, trig
         end
       end
       if parameter.documentation then
+        table.insert(contents, "\r\n")
         vim.lsp.util.convert_input_to_markdown_lines(parameter.documentation, contents)
       end
     end
@@ -139,7 +140,13 @@ function SignatureContent:add_content(signature)
 
   self.contents, self.active_hl = convert_signature_help_to_markdown_lines(signature, ft, triggers)
 
-  self.contents = vim.lsp.util.trim_empty_lines(self.contents)
+  self.contents = vim
+    .iter(self.contents)
+    :filter(function(line)
+      return line ~= ""
+    end)
+    :totable()
+
   if vim.tbl_isempty(self.contents) then
     if signature.config.silent ~= true then
       print("No signature help available")
