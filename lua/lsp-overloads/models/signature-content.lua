@@ -114,6 +114,7 @@ local function convert_signature_help_to_markdown_lines(signature_help, ft, trig
         end
       end
       if parameter.documentation then
+        table.insert(contents, "\r\n")
         vim.lsp.util.convert_input_to_markdown_lines(parameter.documentation, contents)
       end
     end
